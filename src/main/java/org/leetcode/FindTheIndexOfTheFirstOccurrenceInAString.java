@@ -1,0 +1,18 @@
+package org.leetcode;
+
+public class FindTheIndexOfTheFirstOccurrenceInAString {
+
+    public int strStr(String haystack, String needle) {
+        if (haystack.contains(needle)) {
+            return haystack.indexOf(needle);
+        }
+        return -1;
+    }
+
+    public static void main(String[] args) {
+        FindTheIndexOfTheFirstOccurrenceInAString findTheIndexOfTheFirstOccurrenceInAString = new FindTheIndexOfTheFirstOccurrenceInAString();
+        String haystack = "sadbutsad";
+        String needle = "sad";
+        System.out.println(findTheIndexOfTheFirstOccurrenceInAString.strStr(haystack, needle));
+    }
+}
