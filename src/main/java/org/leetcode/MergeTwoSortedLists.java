@@ -13,7 +13,7 @@ package org.leetcode;
  */
 public class MergeTwoSortedLists {
 
-    public static class ListNode {
+    static class ListNode {
         int val;
         ListNode next;
 
