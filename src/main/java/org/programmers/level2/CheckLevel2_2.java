@@ -1,6 +1,5 @@
-package org.programmers;
+package org.programmers.level2;
 
-import java.util.Arrays;
 import java.util.Stack;
 
 /**
