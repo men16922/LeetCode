@@ -2,7 +2,7 @@ package org.programmers;
 
 public class 부족한금액계산하기 {
     public long solution(int price, int money, int count) {
-        int totalPrice = 0;
+        long totalPrice = 0;
         for (int i = 0; i < count; i++) {
             totalPrice += price * (i + 1);
         }
