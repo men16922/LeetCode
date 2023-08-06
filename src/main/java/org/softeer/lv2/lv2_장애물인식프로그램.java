@@ -1,66 +1,62 @@
 package org.softeer.lv2;
 
-import java.util.Arrays;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class lv2_장애물인식프로그램 {
+    final static int MAX = 25 + 10;
+    static boolean [][] graph;
+    static boolean [][] visited;
+    static int countPerBlock;
+    static int [] dirY = {-1, 1, 0, 0}; // 상하좌우
+    static int [] dirX = {0, 0, -1, 1};
 
-    private static int dx[] = {0,0,1,-1};
-    private static int dy[] = {1,-1,0,0};
-    private static int[] aparts = new int[25*25];
-    private static int n;
-    private static int apartNum = 0; //아파트 단지 번호의 수
-    private static boolean[][] visited = new boolean[25][25]; //방문여부
-    private static int[][] map = new int[25][25]; //지도
+    static void dfs(int y, int x) {
+        visited[y][x] = true;
+        countPerBlock++;
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        n = sc.nextInt();
-
-        map = new int[n][n];
-        visited = new boolean[n][n];
-
-        //전체 사각형 입력 받기
-        for(int i=0; i<n; i++){
-            String input = sc.next();
-            for(int j=0; j<n; j++){
-                map[i][j] = input.charAt(j)-'0';
-            }
-        }
-
-        for(int i=0; i<n; i++){
-            for(int j=0; j<n; j++){
-                if(map[i][j] == 1 && !visited[i][j]){
-                    apartNum++;
-                    dfs(i,j);
-                }
-            }
-        }
-
-        Arrays.sort(aparts);
-        System.out.println(apartNum);
-
-        for(int i=0; i<aparts.length; i++){
-            if(aparts[i] == 0){
-            }else{
-                System.out.println(aparts[i]);
+        for (int i = 0; i < 4; i++) {
+            int newY = y + dirY[i];
+            int newX = x + dirX[i];
+            if (graph[newY][newX] && !visited[newY][newX]) {
+                dfs(newY, newX);
             }
         }
     }
 
-    private static void dfs(int x, int y) {
-        visited[x][y] = true;
-        aparts[apartNum]++;
+    public static void main(String[] args) throws IOException {
+        // 0. 입력 및 초기화
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int N = Integer.parseInt(br.readLine());
 
-        for(int i=0; i<4; i++){
-            int nx = x + dx[i];
-            int ny = y + dy[i];
+        graph = new boolean[MAX][MAX];
+        visited = new boolean[MAX][MAX];
 
-            if(nx >=0 && ny >=0 && nx < n && ny < n){
-                if(map[nx][ny] == 1 && !visited[nx][ny]){
-                    dfs(nx,ny);
+        for (int i = 1; i <= N; i++) {
+            String s = br.readLine();
+            for (int j = 1; j <= N; j++) {
+                graph[i][j] = s.charAt(j - 1) == '1'; // 1이면 true
+            }
+        }
+
+        // 1. dfs
+        ArrayList<Integer> countPerBlockList = new ArrayList<>(); // 블록별 장애물 개수
+        for (int i = 1; i <= N; i++) {
+            for (int j = 1; j <= N; j++) {
+                if (!visited[i][j] && graph[i][j]) {
+                    countPerBlock = 0;
+                    dfs(i, j);
+                    countPerBlockList.add(countPerBlock);
                 }
             }
+        }
+
+        // 2. 출력
+        System.out.println(countPerBlockList.size()); // 블록의 개수
+        for (int num : countPerBlockList) {
+            System.out.println(num);
         }
     }
 }
