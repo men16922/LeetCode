@@ -3,59 +3,50 @@ package org.softeer.lv2;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.StringTokenizer;
 
 public class lv2_GBC {
-
+    public static int N, M;
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] input = br.readLine().split(" ");
-        int N = Integer.parseInt(input[0]);
-        int M = Integer.parseInt(input[1]);
-        List<Integer> meter = new ArrayList<>();
-        List<Integer> speed = new ArrayList<>();
-        List<Integer> testMeter = new ArrayList<>();
-        List<Integer> testSpeed = new ArrayList<>();
-        for(int i=0; i<N; i++) {
-            String[] temp = br.readLine().split(" ");
-            meter.add(Integer.parseInt(temp[0]));
-            speed.add(Integer.parseInt(temp[1]));
+        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(bf.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        int[][] arr = new int[N][2];
+        int answer = 0;
+
+        for(int i = 0; i < N; i++) {
+            st = new StringTokenizer(bf.readLine());
+            arr[i][0] = Integer.parseInt(st.nextToken());
+            arr[i][1] = Integer.parseInt(st.nextToken());
         }
-        for(int i=0; i<M; i++) {
-            String[] temp = br.readLine().split(" ");
-            testMeter.add(Integer.parseInt(temp[0]));
-            testSpeed.add(Integer.parseInt(temp[1]));
+
+        int[][] speed = new int[M][2];
+        for(int i = 0; i < M; i++) {
+            st = new StringTokenizer(bf.readLine());
+            speed[i][0] = Integer.parseInt(st.nextToken());
+            speed[i][1] = Integer.parseInt(st.nextToken());
         }
-        int maxSpeed = 0;
-        int startMeter = 0;
-        int endMeter = 0;
-        for(int i=0; i<N; i++) {
-            if(i==0) {
-                endMeter = meter.get(i);
-            } else {
-                endMeter += meter.get(i);
-            }
-            int reachNum = startMeter;
-            while(reachNum < endMeter) {
-                int limitSpeed = speed.get(i);
-                int checkSpeed = 0;
-                int num = 0;
-                for(int j=0; j<testMeter.size(); j++) {
-                    num += testMeter.get(j);
-                    if(reachNum < num) {
-                        checkSpeed = testSpeed.get(j);
-                        break;
-                    }
+
+        int idx = 0;
+        for(int i = 0; i < N; i++) {
+            for(int j = idx; j < M; j++) {
+                if(arr[i][0] < speed[j][0]) {
+                    speed[j][0] -= arr[i][0];
+                    if(speed[j][1] - arr[i][1] > 0) answer = Math.max(answer, speed[j][1] - arr[i][1]);
+                    break;
+                } else if(arr[i][0] > speed[j][0]) {
+                    arr[i][0] -= speed[j][0];
+                    if(speed[j][1] - arr[i][1] > 0) answer = Math.max(answer, speed[j][1] - arr[i][1]);
+                    idx++;
+                } else {
+                    if(speed[j][1] - arr[i][1] > 0) answer = Math.max(answer, speed[j][1] - arr[i][1]);
+                    idx++;
+                    break;
                 }
-                if(limitSpeed < checkSpeed) {
-                    maxSpeed = Math.max(maxSpeed, checkSpeed - limitSpeed);
-                }
-                reachNum++;
             }
-            startMeter = endMeter;
         }
-        System.out.println(maxSpeed);
-        br.close();
+
+        System.out.println(answer);
     }
 }
