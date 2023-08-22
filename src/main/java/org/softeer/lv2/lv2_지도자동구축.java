@@ -10,16 +10,13 @@ public class lv2_지도자동구축 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
 
-        //DP 사용시
-        int [] dp = new int [16]; // 최댓값 15, 16단계 생성
-        dp[0] = 2; // 시작지점 한 변의 점의 개수
+        int [] dp = new int [16];
 
-        // N번째 단계의 한 변의 점의 개수는 (N-1 번째 점의 개수 + N-1 번째 점의 개수 - 1) 과 같다
+        dp[0] = 2;
         for (int i = 1; i < N + 1; i++) {
             dp[i] = dp[i - 1] + (dp[i - 1] - 1);
         }
         System.out.println((int) Math.pow(dp[N], 2));
-
 
 //        int point = 2; // 한 변의 점의 개수
 //

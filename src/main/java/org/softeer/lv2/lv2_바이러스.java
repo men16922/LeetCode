@@ -15,7 +15,7 @@ public class lv2_바이러스 {
         int N = Integer.parseInt(st.nextToken()); // 총 시간
         long answer = K;
         for (int i = 0; i < N; i++) {
-            answer = (answer * P) % 1000000007;
+            answer = answer * P % 1000000007;
         }
         bw.write(String.valueOf(answer));
         br.close();
